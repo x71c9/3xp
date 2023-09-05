@@ -1,17 +1,24 @@
-# r4y
+# 3xp
 
-A typescript library for managing child processes.
+A typescript library for validation objects
 
 ## How to use it
 
 ```typescript
-import ray from 'r4y';
-await ray.execute('echo $WHATEVER');
-await ray.spawn('find . -type f | wc');
-```
+import exp from '3xp';
 
-## Configuration
+const obj = {
+        foo: 'a',
+        boo: 1
+    };
 
-```typescript
-import ray from 'r4y';
+const schema = {
+        foo: 'string',
+        boo: {
+                type: 'number',
+                optional: true
+            }
+    };
+
+exp.validate(obj, schema);
 ```
