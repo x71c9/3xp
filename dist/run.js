@@ -9,7 +9,7 @@ const obj = {
     foo: true,
     moo: {
         aaa: 'a',
-        bbb: [true, false]
+        bbb: [true, false],
     },
 };
 const schema = {
@@ -17,26 +17,26 @@ const schema = {
     schema: {
         hello: 'string',
         foo: {
-            type: 'boolean'
+            type: 'boolean',
         },
         boo: {
             type: 'number',
-            optional: true
+            optional: true,
         },
         moo: {
             type: 'object',
             schema: {
                 aaa: {
                     type: 'string',
-                    options: ['a', 'b']
+                    options: ['a', 'b'],
                 },
                 bbb: {
                     type: 'boolean',
-                    array: true
-                }
-            }
-        }
-    }
+                    array: true,
+                },
+            },
+        },
+    },
 };
 exp.validate(obj, schema);
 //# sourceMappingURL=run.js.map

@@ -47,8 +47,8 @@ function _validate_attribute(attribute_name, value, extended_schema) {
     // Validate array true
     if (extended_schema.array === true) {
         if (!Array.isArray(value)) {
-            throw new Error(`Attribute '${attribute_name}' must be an array.`
-                + ` '${typeof value}' given.`);
+            throw new Error(`Attribute '${attribute_name}' must be an array.` +
+                ` '${typeof value}' given.`);
         }
         else {
             for (let i = 0; i < value.length; i++) {
@@ -72,7 +72,9 @@ function _validate_attribute(attribute_name, value, extended_schema) {
             ` values are [${extended_schema.options}].`);
     }
     // Validate required empty string
-    if (extended_schema.type === 'string' && extended_schema.optional === false && value === '') {
+    if (extended_schema.type === 'string' &&
+        extended_schema.optional === false &&
+        value === '') {
         throw new Error(`Missing required attribute '${attribute_name}'.` +
             ` The string cannot be empty.`);
     }
@@ -86,8 +88,8 @@ function _validate_attribute(attribute_name, value, extended_schema) {
         }
         for (const [k, v] of Object.entries(value_record)) {
             if (!(k in extended_schema.schema)) {
-                throw new Error(`No additional attributes are permitted.`
-                    + ` Attribute '${k}' in not in schema`);
+                throw new Error(`No additional attributes are permitted.` +
+                    ` Attribute '${k}' in not in schema`);
             }
             _validate_attribute(k, v, extended_schema.schema[k]);
         }
@@ -156,7 +158,7 @@ function _extend_schema(schema) {
             array: false,
             optional: false,
             options: null,
-            schema: null
+            schema: null,
         };
         return extended_schema;
     }
@@ -165,7 +167,7 @@ function _extend_schema(schema) {
         array: schema.array || false,
         optional: schema.optional || false,
         options: schema.options || null,
-        schema: (!schema.schema) ? null : _extend_attribute_schema(schema.schema)
+        schema: !schema.schema ? null : _extend_attribute_schema(schema.schema),
     };
     return extended_schema;
 }
