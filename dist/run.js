@@ -10,6 +10,7 @@ const obj = {
     moo: {
         aaa: 'a',
         bbb: [true, false],
+        ccc: new Date
     },
 };
 const schema = {
@@ -34,6 +35,9 @@ const schema = {
                     type: 'boolean',
                     array: true,
                 },
+                ccc: {
+                    type: 'any'
+                }
             },
         },
     },

@@ -26,7 +26,7 @@ export type SchemaExtended = {
     options: Options | null;
     schema: AttributeSchemaExtended | null;
 };
-export type PrimitiveType = 'string' | 'number' | 'boolean';
+export type PrimitiveType = 'string' | 'number' | 'boolean' | 'any';
 export type SchemaType = any;
 export type Config = {};
 export type Type = PrimitiveType | 'object';

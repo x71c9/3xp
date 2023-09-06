@@ -12,6 +12,7 @@ const obj: any = {
   moo: {
     aaa: 'a',
     bbb: [true, false],
+    ccc: new Date(),
   },
 };
 
@@ -36,6 +37,9 @@ const schema: exp.Schema = {
         bbb: {
           type: 'boolean',
           array: true,
+        },
+        ccc: {
+          type: 'any',
         },
       },
     },

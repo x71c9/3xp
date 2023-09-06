@@ -11,6 +11,7 @@ const schema_primitive_types_single = {
     string: true,
     number: true,
     boolean: true,
+    any: true,
 };
 const schema_primitive_types = {
     ...schema_primitive_types_single,
@@ -37,6 +38,9 @@ export function is_valid(obj, schema) {
 function _validate_attribute(attribute_name, value, extended_schema) {
     ion.trace(`Validating attribute '${attribute_name}'...`);
     // Validate optional false
+    if (extended_schema.type === 'any') {
+        return;
+    }
     if (extended_schema.optional === false && typeof value === 'undefined') {
         throw new Error(`Missing required attribute '${attribute_name}'`);
     }
@@ -82,7 +86,7 @@ function _validate_attribute(attribute_name, value, extended_schema) {
     if (extended_schema.schema) {
         const value_record = value;
         for (const [k, v] of Object.entries(extended_schema.schema)) {
-            if (v.optional === false && !(k in value_record)) {
+            if (v.type !== 'any' && v.optional === false && !(k in value_record)) {
                 throw new Error(`Missing required attribute '${k}'`);
             }
         }

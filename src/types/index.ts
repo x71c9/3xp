@@ -32,7 +32,7 @@ export type SchemaExtended = {
   schema: AttributeSchemaExtended | null;
 };
 
-export type PrimitiveType = 'string' | 'number' | 'boolean';
+export type PrimitiveType = 'string' | 'number' | 'boolean' | 'any';
 
 export type SchemaType = any;
 
