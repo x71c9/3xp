@@ -1,3 +1,4 @@
+"use strict";
 /**
  *
  * Main module
@@ -5,8 +6,36 @@
  * @packageDocumentation
  *
  */
-import ion from 'i0n';
-import * as utils from './utils/index.js';
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    var desc = Object.getOwnPropertyDescriptor(m, k);
+    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+      desc = { enumerable: true, get: function() { return m[k]; } };
+    }
+    Object.defineProperty(o, k2, desc);
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    __setModuleDefault(result, mod);
+    return result;
+};
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.is_valid = exports.validate = void 0;
+const i0n_1 = __importDefault(require("i0n"));
+const utils = __importStar(require("./utils/index.js"));
 const schema_primitive_types_single = {
     string: true,
     number: true,
@@ -18,15 +47,16 @@ const schema_primitive_types = {
     object: true,
 };
 const root_attribute_reference = '[root]';
-export function validate(obj, schema) {
-    ion.trace(`Validating object:`, obj);
-    ion.trace(`For schema:`, schema);
+function validate(obj, schema) {
+    i0n_1.default.trace(`Validating object:`, obj);
+    i0n_1.default.trace(`For schema:`, schema);
     _validate_schema(schema);
     const extended_schema = _extend_schema(schema);
     _validate_attribute(root_attribute_reference, obj, extended_schema);
-    ion.debug(`The validation was succesfull`);
+    i0n_1.default.debug(`The validation was succesfull`);
 }
-export function is_valid(obj, schema) {
+exports.validate = validate;
+function is_valid(obj, schema) {
     try {
         validate(obj, schema);
         return true;
@@ -35,8 +65,9 @@ export function is_valid(obj, schema) {
         return false;
     }
 }
+exports.is_valid = is_valid;
 function _validate_attribute(attribute_name, value, extended_schema) {
-    ion.trace(`Validating attribute '${attribute_name}'...`);
+    i0n_1.default.trace(`Validating attribute '${attribute_name}'...`);
     // Validate optional false
     if (extended_schema.type === 'any') {
         return;
@@ -100,7 +131,7 @@ function _validate_attribute(attribute_name, value, extended_schema) {
     }
 }
 function _validate_schema(schema_definition) {
-    ion.trace(`Validating schema...`);
+    i0n_1.default.trace(`Validating schema...`);
     _validate_schema_attribute(root_attribute_reference, schema_definition);
 }
 function _validate_schema_attribute(attribute_name, schema_definition) {

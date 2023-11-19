@@ -6,7 +6,6 @@
   "repository": "git@github.com:x71c9/3xp.git",
   "author": "x71c9 <108585118+x71c9@users.noreply.github.com>",
   "license": "UNLICENSED",
-  "type": "module",
   "private": false,
   "scripts": {
     "precommit": "yarn lint-staged --allow-empty",

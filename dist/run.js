@@ -1,9 +1,14 @@
+"use strict";
 /**
  *
  * Run module
  *
  */
-import exp from './index.js';
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const index_js_1 = __importDefault(require("./index.js"));
 const obj = {
     hello: 'world',
     foo: true,
@@ -42,5 +47,5 @@ const schema = {
         },
     },
 };
-exp.validate(obj, schema);
+index_js_1.default.validate(obj, schema);
 //# sourceMappingURL=run.js.map
