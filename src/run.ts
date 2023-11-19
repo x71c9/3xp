@@ -5,45 +5,47 @@
  */
 
 import exp from './index.js';
+exp.config({debug: true});
 
 const obj: any = {
   hello: 'world',
   foo: true,
   moo: {
     aaa: 'a',
-    bbb: [true, false],
+    bbb: ['a', 'b', 'a'],
     ccc: new Date(),
   },
 };
 
 const schema: exp.Schema = {
-  type: 'object',
-  schema: {
+  primitive: 'object',
+  properties: {
     hello: 'string',
     foo: {
-      type: 'boolean',
+      primitive: 'boolean',
     },
     boo: {
-      type: 'number',
+      primitive: 'number',
       optional: true,
     },
     moo: {
-      type: 'object',
-      schema: {
+      primitive: 'object',
+      properties: {
         aaa: {
-          type: 'string',
-          options: ['a', 'b'],
+          primitive: 'string',
+          values: ['a', 'b'],
         },
         bbb: {
-          type: 'boolean',
-          array: true,
+          primitive: 'array',
+          item: 'string',
+          values: ['a', 'b'],
         },
         ccc: {
-          type: 'any',
+          primitive: 'any',
         },
       },
     },
   },
 };
 
-exp.validate(obj, schema);
+exp.asserts(obj, schema);

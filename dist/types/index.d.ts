@@ -5,30 +5,36 @@
  * @packageDocumentation
  *
  */
-export type Schema = PrimitiveType | SchemaOpen;
-export type AttributeSchema = {
+export type Config = {};
+export type Schema = Primitive | ExpandedSchema;
+export type SchemaType = any;
+export type ExpandedSchema = {
+    primitive: Primitive;
+    item?: Schema;
+    values?: Values;
+    properties?: Properties;
+    optional?: boolean;
+};
+export type Properties = {
     [k: string]: Schema;
 };
-export type SchemaOpen = {
-    type: Type;
-    array?: boolean;
-    optional?: boolean;
-    options?: Options;
-    schema?: AttributeSchema;
+export type ExpandedProperties = {
+    [k: string]: ExpandedSchema;
 };
-export type AttributeSchemaExtended = {
-    [k: string]: SchemaExtended;
+export type Values = (string | number)[];
+export declare const PRIMITIVE: {
+    ARRAY: string;
+    ENUM: string;
+    BOOLEAN: string;
+    NUMBER: string;
+    STRING: string;
+    OBJECT: string;
+    ANY: string;
+    UNKNOWN: string;
+    NULL: string;
+    UNDEFINED: string;
+    UNRESOLVED: string;
 };
-export type SchemaExtended = {
-    type: Type;
-    array: boolean;
-    optional: boolean;
-    options: Options | null;
-    schema: AttributeSchemaExtended | null;
-};
-export type PrimitiveType = 'string' | 'number' | 'boolean' | 'any';
-export type SchemaType = any;
-export type Config = {};
-export type Type = PrimitiveType | 'object';
-type Options = (string | number | boolean)[];
+export type Primitive = ObjectValue<typeof PRIMITIVE>;
+type ObjectValue<T> = T[keyof T];
 export {};

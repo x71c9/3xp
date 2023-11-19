@@ -9,43 +9,45 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const index_js_1 = __importDefault(require("./index.js"));
+index_js_1.default.config({ debug: true });
 const obj = {
     hello: 'world',
     foo: true,
     moo: {
         aaa: 'a',
-        bbb: [true, false],
+        bbb: ['a', 'b', 'a'],
         ccc: new Date(),
     },
 };
 const schema = {
-    type: 'object',
-    schema: {
+    primitive: 'object',
+    properties: {
         hello: 'string',
         foo: {
-            type: 'boolean',
+            primitive: 'boolean',
         },
         boo: {
-            type: 'number',
+            primitive: 'number',
             optional: true,
         },
         moo: {
-            type: 'object',
-            schema: {
+            primitive: 'object',
+            properties: {
                 aaa: {
-                    type: 'string',
-                    options: ['a', 'b'],
+                    primitive: 'string',
+                    values: ['a', 'b'],
                 },
                 bbb: {
-                    type: 'boolean',
-                    array: true,
+                    primitive: 'array',
+                    item: 'string',
+                    values: ['a', 'b'],
                 },
                 ccc: {
-                    type: 'any',
+                    primitive: 'any',
                 },
             },
         },
     },
 };
-index_js_1.default.validate(obj, schema);
+index_js_1.default.asserts(obj, schema);
 //# sourceMappingURL=run.js.map

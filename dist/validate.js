@@ -29,36 +29,23 @@ var __importStar = (this && this.__importStar) || function (mod) {
     __setModuleDefault(result, mod);
     return result;
 };
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.is_valid = exports.validate = void 0;
-const i0n_1 = __importDefault(require("i0n"));
-const utils = __importStar(require("./utils/index.js"));
-const schema_primitive_types_single = {
-    string: true,
-    number: true,
-    boolean: true,
-    any: true,
-};
-const schema_primitive_types = {
-    ...schema_primitive_types_single,
-    object: true,
-};
+exports.is_valid = exports.asserts = void 0;
+const types = __importStar(require("./types/index.js"));
+const index_js_1 = require("./log/index.js");
 const root_attribute_reference = '[root]';
-function validate(obj, schema) {
-    i0n_1.default.trace(`Validating object:`, obj);
-    i0n_1.default.trace(`For schema:`, schema);
+function asserts(obj, schema) {
+    index_js_1.log.trace(`Validating object:`, obj);
+    index_js_1.log.trace(`For schema:`, schema);
     _validate_schema(schema);
-    const extended_schema = _extend_schema(schema);
-    _validate_attribute(root_attribute_reference, obj, extended_schema);
-    i0n_1.default.debug(`The validation was succesfull`);
+    const expanded_schema = _expand_schema(schema);
+    _validate_attribute(root_attribute_reference, obj, expanded_schema);
+    index_js_1.log.success(`The validation was succesfull`);
 }
-exports.validate = validate;
+exports.asserts = asserts;
 function is_valid(obj, schema) {
     try {
-        validate(obj, schema);
+        asserts(obj, schema);
         return true;
     }
     catch (e) {
@@ -66,72 +53,82 @@ function is_valid(obj, schema) {
     }
 }
 exports.is_valid = is_valid;
-function _validate_attribute(attribute_name, value, extended_schema) {
-    i0n_1.default.trace(`Validating attribute '${attribute_name}'...`);
+function _validate_attribute(attribute_name, value, expanded_schema) {
+    index_js_1.log.trace(`Validating attribute '${attribute_name}'...`);
     // Validate optional false
-    if (extended_schema.type === 'any') {
+    if (expanded_schema.primitive === 'any') {
         return;
     }
-    if (extended_schema.optional === false && typeof value === 'undefined') {
+    if (expanded_schema.optional === false && typeof value === 'undefined') {
         throw new Error(`Missing required attribute '${attribute_name}'`);
     }
     // Validate optional true
-    if (extended_schema.optional === true && typeof value === 'undefined') {
+    if (expanded_schema.optional === true && typeof value === 'undefined') {
         return;
     }
     // Validate array true
-    if (extended_schema.array === true) {
+    if (expanded_schema.primitive === 'array') {
         if (!Array.isArray(value)) {
             throw new Error(`Attribute '${attribute_name}' must be an array.` +
                 ` '${typeof value}' given.`);
         }
-        else {
+        if (expanded_schema.item) {
             for (let i = 0; i < value.length; i++) {
-                const cloned_schema = utils.deep_clone(extended_schema);
-                cloned_schema.array = false;
-                _validate_attribute(`${attribute_name}[${i}]`, value[i], cloned_schema);
+                _validate_attribute(`${attribute_name}[${i}]`, value[i], expanded_schema.item);
             }
-            return;
         }
+        if (expanded_schema.values) {
+            for (let i = 0; i < value.length; i++) {
+                if (!expanded_schema.values.includes(value[i])) {
+                    throw new Error(`Element of index ${i} of the array '${attribute_name}' is invalid.` +
+                        ` Possible values are [${expanded_schema.values}]`);
+                }
+            }
+        }
+        return;
     }
     // Validate type
-    if (extended_schema.type !== typeof value) {
+    if (expanded_schema.primitive !== typeof value) {
         throw new Error(`Attribute '${attribute_name}' has an invalid type.` +
-            ` Type should be '${extended_schema.type}'. Type given` +
+            ` Type should be '${expanded_schema.primitive}'. Type given` +
             ` '${typeof value}'`);
     }
     // Validate options
-    const options = extended_schema.options;
+    const options = expanded_schema.values;
     if (options && !options.includes(value)) {
         throw new Error(`Invalid attribute '${attribute_name}'. The only possible` +
-            ` values are [${extended_schema.options}].`);
+            ` values are [${expanded_schema.values}].`);
     }
     // Validate required empty string
-    if (extended_schema.type === 'string' &&
-        extended_schema.optional === false &&
+    if (expanded_schema.primitive === 'string' &&
+        expanded_schema.optional === false &&
         value === '') {
         throw new Error(`Missing required attribute '${attribute_name}'.` +
             ` The string cannot be empty.`);
     }
     // Validate nested attribute
-    if (extended_schema.schema) {
+    if (expanded_schema.properties) {
         const value_record = value;
-        for (const [k, v] of Object.entries(extended_schema.schema)) {
-            if (v.type !== 'any' && v.optional === false && !(k in value_record)) {
+        // Validate all required attributes
+        for (const [k, v] of Object.entries(expanded_schema.properties)) {
+            if (v.primitive !== 'any' &&
+                v.optional === false &&
+                !(k in value_record)) {
                 throw new Error(`Missing required attribute '${k}'`);
             }
         }
         for (const [k, v] of Object.entries(value_record)) {
-            if (!(k in extended_schema.schema)) {
+            // Validate not additional attribute
+            if (!(k in expanded_schema.properties)) {
                 throw new Error(`No additional attributes are permitted.` +
                     ` Attribute '${k}' in not in schema`);
             }
-            _validate_attribute(k, v, extended_schema.schema[k]);
+            _validate_attribute(k, v, expanded_schema.properties[k]);
         }
     }
 }
 function _validate_schema(schema_definition) {
-    i0n_1.default.trace(`Validating schema...`);
+    index_js_1.log.trace(`Validating schema...`);
     _validate_schema_attribute(root_attribute_reference, schema_definition);
 }
 function _validate_schema_attribute(attribute_name, schema_definition) {
@@ -140,12 +137,15 @@ function _validate_schema_attribute(attribute_name, schema_definition) {
     }
     _assert_valid_object(schema_definition, `The attribute '${attribute_name}' is invalid.` +
         ` It should be either one of the primitive types:` +
-        ` [${Object.keys(schema_primitive_types_single)}]` +
+        ` [${Object.values(types.PRIMITIVE)}]` +
         ` or in object format.`);
     _validate_schema_attribute_object(attribute_name, schema_definition);
-    if ('schema' in schema_definition) {
-        const attribute_schema = schema_definition.schema;
-        for (const [key, value] of Object.entries(attribute_schema)) {
+    if ('properties' in schema_definition) {
+        const attribute_properties = schema_definition.properties;
+        if (typeof attribute_properties !== 'object') {
+            return;
+        }
+        for (const [key, value] of Object.entries(attribute_properties)) {
             _validate_schema_attribute(key, value);
         }
     }
@@ -165,60 +165,60 @@ function _assert_valid_object(obj, message) {
     }
 }
 function _validate_schema_attribute_object(attribute_name, attribute) {
-    if (!('type' in attribute)) {
+    if (typeof attribute === 'string') {
+        throw new Error(`There was a problem processing the attribute`);
+    }
+    if (!('primitive' in attribute)) {
         throw new Error(`The schema property '${attribute_name}' is` +
-            ` missing the required 'type' attribute`);
+            ` missing the required 'primitive' attribute`);
     }
-    if (!_valid_primitive_type(attribute.type)) {
+    if (!_valid_primitive_type(attribute.primitive)) {
         throw new Error(`The schema property '${attribute_name}' has an` +
-            ` invalid 'type' attribute value`);
-    }
-    if ('array' in attribute && !_valid_boolean(attribute.array)) {
-        throw new Error(`The schema property '${attribute_name}' has an` +
-            ` invalid 'array' attribute value`);
+            ` invalid 'primitive' attribute value`);
     }
     if ('optional' in attribute && !_valid_boolean(attribute.optional)) {
         throw new Error(`The schema property '${attribute_name}' has an` +
             ` invalid 'optional' attribute`);
     }
-    if (attribute.type === 'object' && !('schema' in attribute)) {
-        throw new Error(`The schema property '${attribute_name}' has a type 'object' but is` +
-            ` missing the required attribute 'schema'`);
-    }
+    // if (attribute.primitive === 'object' && !('properties' in attribute)) {
+    //   throw new Error(
+    //     `The schema property '${attribute_name}' has a type 'object' but is` +
+    //       ` missing the required attribute 'schema'`
+    //   );
+    // }
 }
-function _extend_schema(schema) {
+function _expand_schema(schema) {
     if (typeof schema === 'string') {
-        const extended_schema = {
-            type: schema,
-            array: false,
+        const expanded_schema = {
+            primitive: schema,
             optional: false,
-            options: null,
-            schema: null,
         };
-        return extended_schema;
+        return expanded_schema;
     }
-    const extended_schema = {
-        type: schema.type,
-        array: schema.array || false,
+    const expanded_schema = {
+        primitive: schema.primitive,
         optional: schema.optional || false,
-        options: schema.options || null,
-        schema: !schema.schema ? null : _extend_attribute_schema(schema.schema),
+        values: schema.values,
+        item: !schema.item ? undefined : _expand_schema(schema.item),
+        properties: !schema.properties
+            ? undefined
+            : _expand_attribute_schema(schema.properties),
     };
-    return extended_schema;
+    return expanded_schema;
 }
-function _extend_attribute_schema(attribute_schema) {
-    const attribute_schema_extended = {};
+function _expand_attribute_schema(attribute_schema) {
+    const expanded_properties = {};
     for (const [key, value] of Object.entries(attribute_schema)) {
-        const extended_schema = _extend_schema(value);
-        attribute_schema_extended[key] = extended_schema;
+        const expanded_property = _expand_schema(value);
+        expanded_properties[key] = expanded_property;
     }
-    return attribute_schema_extended;
+    return expanded_properties;
 }
 function _valid_primitive_single_type(schema_attribute) {
     if (!_valid_string(schema_attribute)) {
         return false;
     }
-    if (!(schema_attribute in schema_primitive_types_single)) {
+    if (!Object.values(types.PRIMITIVE).includes(schema_attribute)) {
         return false;
     }
     return true;
@@ -227,7 +227,7 @@ function _valid_primitive_type(schema_attribute) {
     if (!_valid_string(schema_attribute)) {
         return false;
     }
-    if (!(schema_attribute in schema_primitive_types)) {
+    if (!Object.values(types.PRIMITIVE).includes(schema_attribute)) {
         return false;
     }
     return true;

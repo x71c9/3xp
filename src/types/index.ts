@@ -6,38 +6,73 @@
  *
  */
 
-export type Schema = PrimitiveType | SchemaOpen;
+export type Config = {};
 
-export type AttributeSchema = {
+export type Schema = Primitive | ExpandedSchema;
+
+// TODO: Implement SchemaType
+export type SchemaType = any;
+
+export type ExpandedSchema = {
+  primitive: Primitive;
+  item?: Schema;
+  values?: Values;
+  properties?: Properties;
+  optional?: boolean;
+};
+
+export type Properties = {
   [k: string]: Schema;
 };
 
-export type SchemaOpen = {
-  type: Type;
-  array?: boolean;
-  optional?: boolean;
-  options?: Options;
-  schema?: AttributeSchema;
+export type ExpandedProperties = {
+  [k: string]: ExpandedSchema;
 };
 
-export type AttributeSchemaExtended = {
-  [k: string]: SchemaExtended;
+export type Values = (string | number)[];
+
+export const PRIMITIVE = {
+  ARRAY: 'array',
+  ENUM: 'enum',
+  BOOLEAN: 'boolean',
+  NUMBER: 'number',
+  STRING: 'string',
+  OBJECT: 'object',
+  ANY: 'any',
+  UNKNOWN: 'unknown',
+  NULL: 'null',
+  UNDEFINED: 'undefined',
+  UNRESOLVED: 'unresolved',
 };
 
-export type SchemaExtended = {
-  type: Type;
-  array: boolean;
-  optional: boolean;
-  options: Options | null;
-  schema: AttributeSchemaExtended | null;
-};
+export type Primitive = ObjectValue<typeof PRIMITIVE>;
 
-export type PrimitiveType = 'string' | 'number' | 'boolean' | 'any';
+type ObjectValue<T> = T[keyof T];
 
-export type SchemaType = any;
+// export type AttributeSchema = {
+//   [k: string]: Schema;
+// };
 
-export type Config = {};
+// export type SchemaOpen = {
+//   type: Type;
+//   array?: boolean;
+//   optional?: boolean;
+//   options?: Options;
+//   schema?: AttributeSchema;
+// };
 
-export type Type = PrimitiveType | 'object';
+// export type AttributeSchemaExtended = {
+//   [k: string]: SchemaExtended;
+// };
 
-type Options = (string | number | boolean)[];
+// export type SchemaExtended = {
+//   type: Type;
+//   array: boolean;
+//   optional: boolean;
+//   options: Options | null;
+//   schema: AttributeSchemaExtended | null;
+// };
+
+// export type Type = Primitive | 'object';
+
+// type Options = (string | number | boolean)[];
