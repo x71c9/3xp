@@ -11,11 +11,11 @@ export type Config = {
 export type Schema = Primitive | ExpandedSchema;
 export type SchemaType = any;
 export type ExpandedSchema = {
-    primitive: Primitive;
     item?: Schema;
-    values?: Values;
-    properties?: Properties;
     optional?: boolean;
+    primitive: Primitive;
+    properties?: Properties;
+    values?: Values;
 };
 export type Properties = {
     [k: string]: Schema;
@@ -25,16 +25,16 @@ export type ExpandedProperties = {
 };
 export type Values = (string | number)[];
 export declare const PRIMITIVE: {
-    ARRAY: string;
-    ENUM: string;
-    BOOLEAN: string;
-    NUMBER: string;
-    STRING: string;
-    OBJECT: string;
     ANY: string;
-    UNKNOWN: string;
+    ARRAY: string;
+    BOOLEAN: string;
+    ENUM: string;
     NULL: string;
+    NUMBER: string;
+    OBJECT: string;
+    STRING: string;
     UNDEFINED: string;
+    UNKNOWN: string;
     UNRESOLVED: string;
 };
 export type Primitive = ObjectValue<typeof PRIMITIVE>;

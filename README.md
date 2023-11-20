@@ -79,16 +79,16 @@ export type ExpandedProperties = {
 export type Values = (string | number)[];
 
 export const PRIMITIVE = {
-  ARRAY: 'array',
-  ENUM: 'enum',
-  BOOLEAN: 'boolean',
-  NUMBER: 'number',
-  STRING: 'string',
-  OBJECT: 'object',
   ANY: 'any',
-  UNKNOWN: 'unknown',
+  ARRAY: 'array',
+  BOOLEAN: 'boolean',
+  ENUM: 'enum',
   NULL: 'null',
+  NUMBER: 'number',
+  OBJECT: 'object',
+  STRING: 'string',
   UNDEFINED: 'undefined',
+  UNKNOWN: 'unknown',
   UNRESOLVED: 'unresolved',
 };
 
