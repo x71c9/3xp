@@ -9,7 +9,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const index_js_1 = __importDefault(require("./index.js"));
-index_js_1.default.config({ debug: true });
+index_js_1.default.config.set({ debug: true });
 const obj = {
     hello: 'world',
     foo: true,

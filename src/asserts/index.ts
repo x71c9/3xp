@@ -1,13 +1,13 @@
 /**
  *
- * Main module
+ * Asserts index module
  *
  * @packageDocumentation
  *
  */
 
-import * as types from './types/index.js';
-import {log} from './log/index.js';
+import * as types from '../types/index.js';
+import {log} from '../log/index.js';
 
 const root_attribute_reference = '[root]';
 
@@ -23,18 +23,6 @@ export function asserts(
   log.success(`The validation was succesfull`);
 }
 
-export function is_valid(
-  obj: unknown,
-  schema: types.Schema
-): obj is types.SchemaType {
-  try {
-    asserts(obj, schema);
-    return true;
-  } catch (e) {
-    return false;
-  }
-}
-
 function _validate_attribute(
   attribute_name: string,
   value: unknown,
@@ -43,6 +31,7 @@ function _validate_attribute(
   log.trace(`Validating attribute '${attribute_name}'...`);
   // Validate optional false
   if (expanded_schema.primitive === 'any') {
+    log.debug(`Attribute '${attribute_name}' is valid.`);
     return;
   }
   if (expanded_schema.optional === false && typeof value === 'undefined') {
@@ -50,6 +39,7 @@ function _validate_attribute(
   }
   // Validate optional true
   if (expanded_schema.optional === true && typeof value === 'undefined') {
+    log.debug(`Attribute '${attribute_name}' is valid.`);
     return;
   }
   // Validate array true
@@ -79,6 +69,7 @@ function _validate_attribute(
         }
       }
     }
+    log.debug(`Attribute '${attribute_name}' is valid.`);
     return;
   }
   // Validate type
@@ -138,6 +129,7 @@ function _validate_attribute(
       );
     }
   }
+  log.debug(`Attribute '${attribute_name}' is valid.`);
 }
 
 function _validate_schema(

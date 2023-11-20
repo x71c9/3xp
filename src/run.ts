@@ -5,7 +5,7 @@
  */
 
 import exp from './index.js';
-exp.config({debug: true});
+exp.config.set({debug: true});
 
 const obj: any = {
   hello: 'world',

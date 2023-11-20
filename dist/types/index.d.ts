@@ -5,7 +5,9 @@
  * @packageDocumentation
  *
  */
-export type Config = {};
+export type Config = {
+    debug: boolean;
+};
 export type Schema = Primitive | ExpandedSchema;
 export type SchemaType = any;
 export type ExpandedSchema = {
