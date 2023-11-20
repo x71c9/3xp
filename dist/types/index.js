@@ -19,6 +19,5 @@ exports.PRIMITIVE = {
     STRING: 'string',
     UNDEFINED: 'undefined',
     UNKNOWN: 'unknown',
-    UNRESOLVED: 'unresolved',
 };
 //# sourceMappingURL=index.js.map

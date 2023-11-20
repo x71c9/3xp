@@ -35,7 +35,6 @@ export declare const PRIMITIVE: {
     STRING: string;
     UNDEFINED: string;
     UNKNOWN: string;
-    UNRESOLVED: string;
 };
 export type Primitive = ObjectValue<typeof PRIMITIVE>;
 type ObjectValue<T> = T[keyof T];

@@ -44,7 +44,6 @@ export const PRIMITIVE = {
   STRING: 'string',
   UNDEFINED: 'undefined',
   UNKNOWN: 'unknown',
-  UNRESOLVED: 'unresolved',
 };
 
 export type Primitive = ObjectValue<typeof PRIMITIVE>;
