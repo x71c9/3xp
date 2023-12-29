@@ -21,7 +21,7 @@ const schema:exp.Schema = {
 };
 
 exp.asserts(obj, schema);
-// If the object doesn't have that schema `asserts` will throw an error.
+// If the object doesn't have that schema, the method `asserts` throws an error.
 
 if(!exp.valid(obj, schema)){
   console.error('Object is not valid');
