@@ -6,8 +6,8 @@
  *
  */
 
-import * as types from '../types/index.js';
-import {log} from '../log/index.js';
+import * as types from '../types/index';
+import {log} from '../log/index';
 
 const root_attribute_reference = '[root]';
 

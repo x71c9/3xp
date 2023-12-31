@@ -31,23 +31,23 @@ var __importStar = (this && this.__importStar) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.asserts = void 0;
-const types = __importStar(require("../types/index.js"));
-const index_js_1 = require("../log/index.js");
+const types = __importStar(require("../types/index"));
+const index_1 = require("../log/index");
 const root_attribute_reference = '[root]';
 function asserts(obj, schema) {
-    index_js_1.log.trace(`Validating object:`, obj);
-    index_js_1.log.trace(`For schema:`, schema);
+    index_1.log.trace(`Validating object:`, obj);
+    index_1.log.trace(`For schema:`, schema);
     _validate_schema(schema);
     const expanded_schema = _expand_schema(schema);
     _validate_attribute(root_attribute_reference, obj, expanded_schema);
-    index_js_1.log.success(`The validation was succesfull`);
+    index_1.log.success(`The validation was succesfull`);
 }
 exports.asserts = asserts;
 function _validate_attribute(attribute_name, value, expanded_schema) {
-    index_js_1.log.trace(`Validating attribute '${attribute_name}'...`);
+    index_1.log.trace(`Validating attribute '${attribute_name}'...`);
     // Validate optional false
     if (expanded_schema.primitive === 'any') {
-        index_js_1.log.debug(`Attribute '${attribute_name}' is valid.`);
+        index_1.log.debug(`Attribute '${attribute_name}' is valid.`);
         return;
     }
     if (expanded_schema.optional === false && typeof value === 'undefined') {
@@ -55,7 +55,7 @@ function _validate_attribute(attribute_name, value, expanded_schema) {
     }
     // Validate optional true
     if (expanded_schema.optional === true && typeof value === 'undefined') {
-        index_js_1.log.debug(`Attribute '${attribute_name}' is valid.`);
+        index_1.log.debug(`Attribute '${attribute_name}' is valid.`);
         return;
     }
     // Validate array true
@@ -77,7 +77,7 @@ function _validate_attribute(attribute_name, value, expanded_schema) {
                 }
             }
         }
-        index_js_1.log.debug(`Attribute '${attribute_name}' is valid.`);
+        index_1.log.debug(`Attribute '${attribute_name}' is valid.`);
         return;
     }
     // Validate type
@@ -119,10 +119,10 @@ function _validate_attribute(attribute_name, value, expanded_schema) {
             _validate_attribute(k, v, expanded_schema.properties[k]);
         }
     }
-    index_js_1.log.debug(`Attribute '${attribute_name}' is valid.`);
+    index_1.log.debug(`Attribute '${attribute_name}' is valid.`);
 }
 function _validate_schema(schema_definition) {
-    index_js_1.log.trace(`Validating schema...`);
+    index_1.log.trace(`Validating schema...`);
     _validate_schema_attribute(root_attribute_reference, schema_definition);
 }
 function _validate_schema_attribute(attribute_name, schema_definition) {

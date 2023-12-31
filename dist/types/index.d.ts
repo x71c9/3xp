@@ -5,8 +5,10 @@
  * @packageDocumentation
  *
  */
+import ion from 'i0n';
 export type Config = {
     debug: boolean;
+    spinner: ion.Spinner;
 };
 export type Schema = Primitive | ExpandedSchema;
 export type SchemaType = any;

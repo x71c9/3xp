@@ -5,5 +5,5 @@
  * @packageDocumentation
  *
  */
-import * as exp from './main.js';
+import * as exp from './main';
 export default exp;

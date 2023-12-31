@@ -6,10 +6,10 @@
  *
  */
 
-export {Schema} from './types/index.js';
+export {Schema} from './types/index';
 
-import {set} from './config/index.js';
+import {set} from './config/index';
 export const config = {set};
 
-export * from './asserts/index.js';
-export * from './valid/index.js';
+export * from './asserts/index';
+export * from './valid/index';

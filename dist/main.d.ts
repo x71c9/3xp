@@ -5,9 +5,10 @@
  * @packageDocumentation
  *
  */
-export { Schema } from './types/index.js';
+export { Schema } from './types/index';
+import { set } from './config/index';
 export declare const config: {
-    set: (params: import("w3i").DeepPartial<import("./types/index.js").Config>) => void;
+    set: typeof set;
 };
-export * from './asserts/index.js';
-export * from './valid/index.js';
+export * from './asserts/index';
+export * from './valid/index';
