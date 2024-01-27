@@ -27,16 +27,16 @@ export type ExpandedProperties = {
 };
 export type Values = (string | number)[];
 export declare const PRIMITIVE: {
-    ANY: string;
-    ARRAY: string;
-    BOOLEAN: string;
-    ENUM: string;
-    NULL: string;
-    NUMBER: string;
-    OBJECT: string;
-    STRING: string;
-    UNDEFINED: string;
-    UNKNOWN: string;
+    readonly ANY: "any";
+    readonly ARRAY: "array";
+    readonly BOOLEAN: "boolean";
+    readonly ENUM: "enum";
+    readonly NULL: "null";
+    readonly NUMBER: "number";
+    readonly OBJECT: "object";
+    readonly STRING: "string";
+    readonly UNDEFINED: "undefined";
+    readonly UNKNOWN: "unknown";
 };
 export type Primitive = ObjectValue<typeof PRIMITIVE>;
 type ObjectValue<T> = T[keyof T];

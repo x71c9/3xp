@@ -16,7 +16,7 @@ const w3i_1 = require("w3i");
 const index_1 = require("../log/index");
 exports.weights = new w3i_1.Weights({
     debug: false,
-    spinner: index_1.log.spinner
+    spinner: index_1.log.spinner,
 });
 function set(params) {
     /**

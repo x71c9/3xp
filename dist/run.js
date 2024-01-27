@@ -12,6 +12,7 @@ const index_js_1 = __importDefault(require("./index.js"));
 index_js_1.default.config.set({ debug: true });
 const obj = {
     hello: 'world',
+    boo: 'an-option',
     foo: true,
     moo: {
         aaa: 'a',
@@ -27,8 +28,9 @@ const schema = {
             primitive: 'boolean',
         },
         boo: {
-            primitive: 'number',
+            primitive: 'enum',
             optional: true,
+            values: ['an-option']
         },
         moo: {
             primitive: 'object',

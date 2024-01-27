@@ -9,6 +9,7 @@ exp.config.set({debug: true});
 
 const obj: any = {
   hello: 'world',
+  boo: 'an-option',
   foo: true,
   moo: {
     aaa: 'a',
@@ -25,8 +26,9 @@ const schema: exp.Schema = {
       primitive: 'boolean',
     },
     boo: {
-      primitive: 'number',
+      primitive: 'enum',
       optional: true,
+      values: ['an-option'],
     },
     moo: {
       primitive: 'object',

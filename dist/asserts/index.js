@@ -81,10 +81,35 @@ function _validate_attribute(attribute_name, value, expanded_schema) {
         return;
     }
     // Validate type
-    if (expanded_schema.primitive !== typeof value) {
-        throw new Error(`Attribute '${attribute_name}' has an invalid type.` +
-            ` Type should be '${expanded_schema.primitive}'. Type given` +
-            ` '${typeof value}'`);
+    switch (expanded_schema.primitive) {
+        case 'enum': {
+            const possible_values = new Set();
+            if (!expanded_schema.values ||
+                !Array.isArray(expanded_schema.values) ||
+                expanded_schema.values.length < 1) {
+                throw new Error(`Attribute ${attribute_name} has invalid possible values.` +
+                    ` It cannot be evaluated`);
+            }
+            for (const value of expanded_schema.values) {
+                possible_values.add(typeof value);
+            }
+            if (!possible_values.has(typeof value)) {
+                throw new Error(`Attribute '${attribute_name}' has an invalid type.` +
+                    ` Type should be one of the following ['${Array.from(possible_values)}'].` +
+                    ` Type given '${typeof value}'`);
+            }
+            break;
+        }
+        case 'unknown': {
+            break;
+        }
+        default: {
+            if (expanded_schema.primitive !== typeof value) {
+                throw new Error(`Attribute '${attribute_name}' has an invalid type.` +
+                    ` Type should be '${expanded_schema.primitive}'. Type given` +
+                    ` '${typeof value}'`);
+            }
+        }
     }
     // Validate options
     const options = expanded_schema.values;
