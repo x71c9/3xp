@@ -30,7 +30,7 @@ const schema = {
         boo: {
             primitive: 'enum',
             optional: true,
-            values: ['an-option']
+            values: ['an-option'],
         },
         moo: {
             primitive: 'object',

@@ -519,6 +519,11 @@ cross-spawn@^7.0.2, cross-spawn@^7.0.3:
     shebang-command "^2.0.0"
     which "^2.0.1"
 
+dateformat@^3:
+  version "3.0.3"
+  resolved "https://registry.yarnpkg.com/dateformat/-/dateformat-3.0.3.tgz#a6e37499a4d9a9cf85ef5872044d62901c9889ae"
+  integrity sha512-jyCETtSl3VMZMWeRo7iY1FL19ges1t55hMo5yaam4Jrsm5EPL89UQkoQRyiI+Yf4k8r2ZpdngkV8hr1lIdjb3Q==
+
 debug@4.3.4, debug@^4.1.1, debug@^4.3.2, debug@^4.3.4:
   version "4.3.4"
   resolved "https://registry.yarnpkg.com/debug/-/debug-4.3.4.tgz#1319f6579357f2338d3337d2cdd4914bb5dcc865"
@@ -1155,11 +1160,12 @@ husky@^8.0.3:
   resolved "https://registry.yarnpkg.com/husky/-/husky-8.0.3.tgz#4936d7212e46d1dea28fef29bb3a108872cd9184"
   integrity sha512-+dQSyqPh4x1hlO1swXBiNb2HzTDN1I2IGLQx1GrBuiqFJfoMrnZWwVmatvSiO+Iz8fBUnf+lekwNo4c2LlXItg==
 
-i0n@^0.8.1:
-  version "0.8.1"
-  resolved "https://registry.yarnpkg.com/i0n/-/i0n-0.8.1.tgz#fbf00f27a8df4ca6e64dae9e0439d65fd965d796"
-  integrity sha512-nyG/DRlr39tEjdEj0FOwLZnWNl6b/anlUa18WAmF4wiqa4MX6n8kJoPIkER4VbfagWJ+MPZ5962tJLx54yd+TA==
+i0n@^0.9.0:
+  version "0.9.0"
+  resolved "https://registry.yarnpkg.com/i0n/-/i0n-0.9.0.tgz#c68f79d38ff01f36ed0a1cb339623ab6a9e10c04"
+  integrity sha512-aldz/ggrMsiatRe12sk+T3LI5rbe29ucq/KWxrMLzqTELUtFjoW6Ql12oYNyyJir5m6Agi3ai9i+UtBYpfDu8Q==
   dependencies:
+    dateformat "^3"
     ora-classic "^5.4.2"
     w3i "^0.2.0"
 
