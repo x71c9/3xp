@@ -44,15 +44,16 @@ exports.asserts = asserts;
 const types = __importStar(require("../types/index"));
 const index_1 = require("../log/index");
 const root_attribute_reference = '[root]';
-function asserts(obj, schema) {
+function asserts(obj, schema, exact = true) {
     index_1.log.trace(`Validating object:`, obj);
     index_1.log.trace(`For schema:`, schema);
+    index_1.log.trace(`Exact mode:`, exact);
     _validate_schema(schema);
     const expanded_schema = _expand_schema(schema);
-    _validate_attribute(root_attribute_reference, obj, expanded_schema);
+    _validate_attribute(root_attribute_reference, obj, expanded_schema, exact);
     index_1.log.success(`The validation was succesfull`);
 }
-function _validate_attribute(attribute_name, value, expanded_schema) {
+function _validate_attribute(attribute_name, value, expanded_schema, exact = true) {
     index_1.log.trace(`Validating attribute '${attribute_name}'...`);
     // Validate optional false
     if (expanded_schema.primitive === 'any') {
@@ -75,7 +76,7 @@ function _validate_attribute(attribute_name, value, expanded_schema) {
         }
         if (expanded_schema.item) {
             for (let i = 0; i < value.length; i++) {
-                _validate_attribute(`${attribute_name}[${i}]`, value[i], expanded_schema.item);
+                _validate_attribute(`${attribute_name}[${i}]`, value[i], expanded_schema.item, exact);
             }
         }
         if (expanded_schema.values) {
@@ -147,10 +148,16 @@ function _validate_attribute(attribute_name, value, expanded_schema) {
         for (const [k, v] of Object.entries(value_record)) {
             // Validate not additional attribute
             if (!(k in expanded_schema.properties)) {
-                throw new Error(`No additional attributes are permitted.` +
-                    ` Attribute '${k}' in not in schema`);
+                if (exact) {
+                    throw new Error(`No additional attributes are permitted.` +
+                        ` Attribute '${k}' in not in schema`);
+                }
+                else {
+                    index_1.log.debug(`Skipping additional attribute '${k}' (exact mode is disabled)`);
+                    continue;
+                }
             }
-            _validate_attribute(k, v, expanded_schema.properties[k]);
+            _validate_attribute(k, v, expanded_schema.properties[k], exact);
         }
     }
     index_1.log.debug(`Attribute '${attribute_name}' is valid.`);

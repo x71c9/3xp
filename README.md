@@ -28,6 +28,32 @@ if(!exp.is_valid(obj, schema)){
 }
 ```
 
+### Exact Mode
+
+By default, validation is strict and does not allow additional properties not defined in the schema. You can disable this behavior by setting the `exact` parameter to `false`:
+
+```typescript
+import exp from '3xp';
+
+const schema = {
+  foo: 'string',
+  boo: 'number'
+};
+
+// This will throw an error (extra property 'bar')
+const obj1 = { foo: 'a', boo: 1, bar: 'extra' };
+exp.asserts(obj1, schema); // Error: No additional attributes are permitted
+
+// This will pass (exact mode disabled)
+const obj2 = { foo: 'a', boo: 1, bar: 'extra' };
+exp.asserts(obj2, schema, false); // OK - extra properties are ignored
+
+// Works with is_valid too
+if(exp.is_valid(obj2, schema, false)){
+  console.log('Valid (with extra properties allowed)');
+}
+```
+
 ## TypeScript Type Inference
 
 You can use `SchemaType` to infer TypeScript types from your schemas. This provides full type safety at compile time based on your runtime schema definitions.
