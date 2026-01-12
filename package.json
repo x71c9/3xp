@@ -1,6 +1,6 @@
 {
   "name": "3xp",
-  "version": "0.7.0",
+  "version": "0.8.0",
   "description": "A typescript library for validating object schemas",
   "main": "dist/index.js",
   "repository": "git@github.com:x71c9/3xp.git",
