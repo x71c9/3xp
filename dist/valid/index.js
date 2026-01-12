@@ -7,7 +7,7 @@
  *
  */
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.is_valid = void 0;
+exports.is_valid = is_valid;
 const index_js_1 = require("../asserts/index.js");
 function is_valid(obj, schema) {
     try {
@@ -18,5 +18,4 @@ function is_valid(obj, schema) {
         return false;
     }
 }
-exports.is_valid = is_valid;
 //# sourceMappingURL=index.js.map

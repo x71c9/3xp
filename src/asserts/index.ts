@@ -11,10 +11,7 @@ import {log} from '../log/index';
 
 const root_attribute_reference = '[root]';
 
-export function asserts(
-  obj: unknown,
-  schema: types.Schema
-): asserts obj is types.SchemaType {
+export function asserts(obj: unknown, schema: types.Schema): asserts obj {
   log.trace(`Validating object:`, obj);
   log.trace(`For schema:`, schema);
   _validate_schema(schema);

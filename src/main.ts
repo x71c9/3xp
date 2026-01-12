@@ -6,7 +6,7 @@
  *
  */
 
-export {Schema} from './types/index';
+export {Schema, SchemaType} from './types/index';
 
 import {set} from './config/index';
 export const config = {set};

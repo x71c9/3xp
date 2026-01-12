@@ -23,9 +23,65 @@ const schema:exp.Schema = {
 exp.asserts(obj, schema);
 // If the object doesn't have that schema, the method `asserts` throws an error.
 
-if(!exp.valid(obj, schema)){
+if(!exp.is_valid(obj, schema)){
   console.error('Object is not valid');
 }
+```
+
+## TypeScript Type Inference
+
+You can use `SchemaType` to infer TypeScript types from your schemas. This provides full type safety at compile time based on your runtime schema definitions.
+
+```typescript
+import exp from '3xp';
+
+// Define your schema with 'as const' to preserve literal types
+const schema = {
+  primitive: 'object',
+  properties: {
+    name: 'string',
+    age: 'number',
+    email: {
+      primitive: 'string',
+      optional: true
+    }
+  }
+} as const;
+
+// Infer the TypeScript type from the schema
+type User = exp.SchemaType<typeof schema>;
+// User is: { name: string; age: number; email?: string }
+
+// Now you have full type safety
+const user: User = {
+  name: 'John',
+  age: 30
+  // email is optional
+};
+
+// TypeScript will catch errors at compile time
+const invalidUser: User = {
+  name: 'Jane',
+  age: 'not a number' // Error: Type 'string' is not assignable to type 'number'
+};
+```
+
+### Important Notes
+
+- **Use `as const`**: You must use `as const` assertion on your schema to preserve literal types
+- **Works with all schema features**: Supports primitives, objects, arrays, optional fields, and enum values
+- **Type-safe enums**: The `values` property creates proper union types
+
+Example with enum values:
+
+```typescript
+const statusSchema = {
+  primitive: 'string',
+  values: ['active', 'inactive', 'pending'] as const
+} as const;
+
+type Status = exp.SchemaType<typeof statusSchema>;
+// Status is: 'active' | 'inactive' | 'pending'
 ```
 
 ## Schema
