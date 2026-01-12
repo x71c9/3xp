@@ -6,4 +6,4 @@
  *
  */
 import * as types from '../types/index';
-export declare function asserts(obj: unknown, schema: types.Schema): asserts obj;
+export declare function asserts<S extends types.Schema>(obj: unknown, schema: S, exact?: boolean): asserts obj is types.SchemaType<S>;

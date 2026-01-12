@@ -11,19 +11,25 @@ import {log} from '../log/index';
 
 const root_attribute_reference = '[root]';
 
-export function asserts(obj: unknown, schema: types.Schema): asserts obj {
+export function asserts<S extends types.Schema>(
+  obj: unknown,
+  schema: S,
+  exact: boolean = true
+): asserts obj is types.SchemaType<S> {
   log.trace(`Validating object:`, obj);
   log.trace(`For schema:`, schema);
+  log.trace(`Exact mode:`, exact);
   _validate_schema(schema);
   const expanded_schema = _expand_schema(schema);
-  _validate_attribute(root_attribute_reference, obj, expanded_schema);
+  _validate_attribute(root_attribute_reference, obj, expanded_schema, exact);
   log.success(`The validation was succesfull`);
 }
 
 function _validate_attribute(
   attribute_name: string,
   value: unknown,
-  expanded_schema: types.ExpandedSchema
+  expanded_schema: types.ExpandedSchema,
+  exact: boolean = true
 ) {
   log.trace(`Validating attribute '${attribute_name}'...`);
   // Validate optional false
@@ -52,7 +58,8 @@ function _validate_attribute(
         _validate_attribute(
           `${attribute_name}[${i}]`,
           value[i],
-          expanded_schema.item as types.ExpandedSchema
+          expanded_schema.item as types.ExpandedSchema,
+          exact
         );
       }
     }
@@ -147,15 +154,23 @@ function _validate_attribute(
     for (const [k, v] of Object.entries(value_record)) {
       // Validate not additional attribute
       if (!(k in expanded_schema.properties)) {
-        throw new Error(
-          `No additional attributes are permitted.` +
-            ` Attribute '${k}' in not in schema`
-        );
+        if (exact) {
+          throw new Error(
+            `No additional attributes are permitted.` +
+              ` Attribute '${k}' in not in schema`
+          );
+        } else {
+          log.debug(
+            `Skipping additional attribute '${k}' (exact mode is disabled)`
+          );
+          continue;
+        }
       }
       _validate_attribute(
         k,
         v,
-        expanded_schema.properties[k] as types.ExpandedSchema
+        expanded_schema.properties[k] as types.ExpandedSchema,
+        exact
       );
     }
   }
