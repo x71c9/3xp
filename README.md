@@ -1,8 +1,27 @@
 # 3xp
 
-A typescript library for validating objects.
+A TypeScript library for runtime object validation with compile-time type inference.
 
-## Implementation
+## Overview
+
+`3xp` provides a simple, type-safe way to validate JavaScript objects against schemas at runtime while automatically inferring TypeScript types at compile time. Define your schema once, and get both runtime validation and static type checking.
+
+**Key Features:**
+
+- **Runtime Validation**: Validate objects against schemas with clear error messages
+- **Type Inference**: Automatically derive TypeScript types from your schemas using `SchemaType<T>`
+- **Type Guards**: Use `is_valid` for type-safe conditional checks
+- **Flexible Validation**: Choose strict mode (exact match) or permissive mode (allow extra properties)
+- **Schema Definition**: Support for primitives, objects, arrays, optional fields, and enum values
+- **Lightweight**: Extremely minimal dependencies with low runtime overhead
+
+## Installation
+
+```bash
+npm install 3xp
+```
+
+## Quick Start
 
 ```typescript
 import exp from '3xp';
@@ -12,13 +31,16 @@ const obj = {
   boo: 1
 };
 
-const schema:exp.Schema = {
-  foo: 'string',
-  boo: {
-    primitive: 'number',
-    optional: true
+const schema: exp.Schema = {
+  primitive: 'object',
+  properties: {
+    foo: 'string', // Shorthand for primitive type
+    boo: {
+      primitive: 'number', // Extended format with options
+      optional: true
+    }
   }
-};
+} as const;
 
 exp.asserts(obj, schema);
 // If the object doesn't have that schema, the method `asserts` throws an error.
@@ -28,6 +50,77 @@ if(!exp.is_valid(obj, schema)){
 }
 ```
 
+## Schema
+
+Example of a schema:
+```typescript
+const schema: exp.Schema = {
+  primitive: 'object',
+  properties: {
+    foo: 'string', // Shorthand: primitive type directly
+    boo: {
+      primitive: 'number', // Extended format with additional options
+      optional: true,
+    },
+    moo: {
+      primitive: 'array',
+      item: {
+        primitive: 'object',
+        properties: {
+          pippo: 'boolean', // Shorthand
+          pluto: 'any' // Shorthand
+        }
+      }
+    },
+    poo: {
+      primitive: 'string',
+      values: ['A', 'B', 'C'], // Enum values create union types
+    }
+  }
+} as const;
+```
+
+The following is the type of the schema:
+
+```typescript
+export type Schema = Primitive | ExpandedSchema;
+
+export type ExpandedSchema = {
+  primitive: Primitive;
+  item?: Schema;
+  values?: Values;
+  properties?: Properties;
+  optional?: boolean;
+};
+
+export type Properties = {
+  [k: string]: Schema;
+};
+
+export type ExpandedProperties = {
+  [k: string]: ExpandedSchema;
+};
+
+export type Values = (string | number)[];
+
+export const PRIMITIVE = {
+  ANY: 'any',
+  ARRAY: 'array',
+  BOOLEAN: 'boolean',
+  ENUM: 'enum',
+  NULL: 'null',
+  NUMBER: 'number',
+  OBJECT: 'object',
+  STRING: 'string',
+  UNDEFINED: 'undefined',
+  UNKNOWN: 'unknown',
+};
+
+export type Primitive = ObjectValue<typeof PRIMITIVE>;
+
+type ObjectValue<T> = T[keyof T];
+```
+
 ### Exact Mode
 
 By default, validation is strict and does not allow additional properties not defined in the schema. You can disable this behavior by setting the `exact` parameter to `false`:
@@ -35,10 +128,13 @@ By default, validation is strict and does not allow additional properties not de
 ```typescript
 import exp from '3xp';
 
-const schema = {
-  foo: 'string',
-  boo: 'number'
-};
+const schema: exp.Schema = {
+  primitive: 'object',
+  properties: {
+    foo: 'string', // Shorthand for primitive type
+    boo: 'number'
+  }
+} as const;
 
 // This will throw an error (extra property 'bar')
 const obj1 = { foo: 'a', boo: 1, bar: 'extra' };
@@ -108,74 +204,6 @@ const statusSchema = {
 
 type Status = exp.SchemaType<typeof statusSchema>;
 // Status is: 'active' | 'inactive' | 'pending'
-```
-
-## Schema
-
-Example of a schema:
-```typescript
-const schema:Schema = {
-  foo: 'string',
-  boo: {
-    primitive: 'number',
-    optional: true,
-  },
-  moo: {
-    primitive: 'array',
-    item: {
-      primitive: 'object',
-      properties: {
-        pippo: 'boolean',
-        pluto: 'any'
-      }
-    }
-  },
-  poo: {
-    primitive: 'string',
-    values: ['A', 'B', 'C'],
-  }
-}
-```
-
-The following is the type of the schema:
-
-```typescript
-export type Schema = Primitive | ExpandedSchema;
-
-export type ExpandedSchema = {
-  primitive: Primitive;
-  item?: Schema;
-  values?: Values;
-  properties?: Properties;
-  optional?: boolean;
-};
-
-export type Properties = {
-  [k: string]: Schema;
-};
-
-export type ExpandedProperties = {
-  [k: string]: ExpandedSchema;
-};
-
-export type Values = (string | number)[];
-
-export const PRIMITIVE = {
-  ANY: 'any',
-  ARRAY: 'array',
-  BOOLEAN: 'boolean',
-  ENUM: 'enum',
-  NULL: 'null',
-  NUMBER: 'number',
-  OBJECT: 'object',
-  STRING: 'string',
-  UNDEFINED: 'undefined',
-  UNKNOWN: 'unknown',
-};
-
-export type Primitive = ObjectValue<typeof PRIMITIVE>;
-
-type ObjectValue<T> = T[keyof T];
 ```
 
 ## Unix philosophy
