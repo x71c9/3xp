@@ -1,6 +1,6 @@
 /**
  *
- * Asserts index module
+ * Ensure index module
  *
  * @packageDocumentation
  *
@@ -11,7 +11,7 @@ import {log} from '../log/index';
 
 const root_attribute_reference = '[root]';
 
-export function asserts<S extends types.Schema>(
+export function ensure<S extends types.Schema>(
   obj: unknown,
   schema: S,
   exact: boolean = true

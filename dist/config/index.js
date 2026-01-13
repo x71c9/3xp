@@ -10,8 +10,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.weights = void 0;
-exports.set = set;
+exports.set = exports.weights = void 0;
 const i0n_1 = __importDefault(require("i0n"));
 const w3i_1 = require("w3i");
 const index_1 = require("../log/index");
@@ -37,4 +36,5 @@ function set(params) {
         index_1.log.params.log_level = i0n_1.default.LOG_LEVEL.TRACE;
     }
 }
+exports.set = set;
 //# sourceMappingURL=index.js.map

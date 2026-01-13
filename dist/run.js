@@ -51,5 +51,5 @@ const schema = {
         },
     },
 };
-index_js_1.default.asserts(obj, schema);
+index_js_1.default.ensure(obj, schema);
 //# sourceMappingURL=run.js.map

@@ -7,15 +7,16 @@
  *
  */
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.is_valid = is_valid;
-const index_js_1 = require("../asserts/index.js");
-function is_valid(obj, schema, exact = true) {
+exports.isValid = void 0;
+const index_js_1 = require("../ensure/index.js");
+function isValid(obj, schema, exact = true) {
     try {
-        (0, index_js_1.asserts)(obj, schema, exact);
+        (0, index_js_1.ensure)(obj, schema, exact);
         return true;
     }
     catch (e) {
         return false;
     }
 }
+exports.isValid = isValid;
 //# sourceMappingURL=index.js.map

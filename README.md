@@ -10,7 +10,7 @@ A TypeScript library for runtime object validation with compile-time type infere
 
 - **Runtime Validation**: Validate objects against schemas with clear error messages
 - **Type Inference**: Automatically derive TypeScript types from your schemas using `SchemaType<T>`
-- **Type Guards**: Use `is_valid` for type-safe conditional checks
+- **Type Guards**: Use `isValid` for type-safe conditional checks
 - **Flexible Validation**: Choose strict mode (exact match) or permissive mode (allow extra properties)
 - **Schema Definition**: Support for primitives, objects, arrays, optional fields, and enum values
 - **Lightweight**: Extremely minimal dependencies with low runtime overhead
@@ -42,10 +42,10 @@ const schema: exp.Schema = {
   }
 } as const;
 
-exp.asserts(obj, schema);
-// If the object doesn't have that schema, the method `asserts` throws an error.
+exp.ensure(obj, schema);
+// If the object doesn't have that schema, the method `ensure` throws an error.
 
-if(!exp.is_valid(obj, schema)){
+if(!exp.isValid(obj, schema)){
   console.error('Object is not valid');
 }
 ```
@@ -138,14 +138,14 @@ const schema: exp.Schema = {
 
 // This will throw an error (extra property 'bar')
 const obj1 = { foo: 'a', boo: 1, bar: 'extra' };
-exp.asserts(obj1, schema); // Error: No additional attributes are permitted
+exp.ensure(obj1, schema); // Error: No additional attributes are permitted
 
 // This will pass (exact mode disabled)
 const obj2 = { foo: 'a', boo: 1, bar: 'extra' };
-exp.asserts(obj2, schema, false); // OK - extra properties are ignored
+exp.ensure(obj2, schema, false); // OK - extra properties are ignored
 
-// Works with is_valid too
-if(exp.is_valid(obj2, schema, false)){
+// Works with isValid too
+if(exp.isValid(obj2, schema, false)){
   console.log('Valid (with extra properties allowed)');
 }
 ```

@@ -50,4 +50,4 @@ const schema: exp.Schema = {
   },
 };
 
-exp.asserts(obj, schema);
+exp.ensure(obj, schema);
