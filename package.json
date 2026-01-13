@@ -1,6 +1,6 @@
 {
   "name": "3xp",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "A TypeScript library providing runtime object validation with automatic compile-time type inference. Supports primitives, nested objects, arrays, optional fields, and enum values with strict or permissive validation modes.",
   "main": "dist/index.js",
   "repository": "git@github.com:x71c9/3xp.git",
