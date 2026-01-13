@@ -11,13 +11,13 @@ fi;
 
 # Check if logged in to npm
 echo "Checking npm login status..."
-if ! npm whoami > /dev/null 2>&1; then
+if ! npm whoami --loglevel=error > /dev/null 2>&1; then
   echo
   echo "You are not logged in to npm."
   echo "Please log in to continue."
   echo
   npm login
-  if ! npm whoami > /dev/null 2>&1; then
+  if ! npm whoami --loglevel=error > /dev/null 2>&1; then
     echo
     echo "Error: npm login failed. Aborting."
     echo
@@ -27,7 +27,7 @@ if ! npm whoami > /dev/null 2>&1; then
   echo "Successfully logged in to npm as: $(npm whoami)"
   echo
 else
-  echo "Already logged in to npm as: $(npm whoami)"
+  echo "Already logged in to npm as: $(npm whoami --loglevel=error)"
   echo
 fi
 
@@ -41,7 +41,7 @@ fi
 
 case "$SEMANTIC_NAME" in
   patch)
-    npm version patch
+    npm version patch --loglevel=error
     break;
     ;;
   minor)
@@ -53,7 +53,7 @@ case "$SEMANTIC_NAME" in
         * ) echo "Please answer [y]es or [n]o.";;
       esac
     done
-    npm version minor
+    npm version minor --loglevel=error
     break;
     ;;
   major)
@@ -65,7 +65,7 @@ case "$SEMANTIC_NAME" in
         * ) echo "Please answer [y]es or [n]o.";;
       esac
     done
-    npm version major
+    npm version major --loglevel=error
     break;
     ;;
   *)
