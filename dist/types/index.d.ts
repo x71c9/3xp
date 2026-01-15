@@ -51,6 +51,17 @@ export type ExpandedProperties = {
     [k: string]: ExpandedSchema;
 };
 export type Values = readonly (string | number)[] | (string | number)[];
+export type ValidationError = {
+    path: string;
+    message: string;
+};
+export type ValidationResult = {
+    success: true;
+    errors: [];
+} | {
+    success: false;
+    errors: ValidationError[];
+};
 export declare const PRIMITIVE: {
     readonly ANY: "any";
     readonly ARRAY: "array";

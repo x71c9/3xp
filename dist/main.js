@@ -25,5 +25,6 @@ exports.config = void 0;
 const index_1 = require("./config/index");
 exports.config = { set: index_1.set };
 __exportStar(require("./ensure/index"), exports);
+__exportStar(require("./parse/index"), exports);
 __exportStar(require("./valid/index"), exports);
 //# sourceMappingURL=main.js.map

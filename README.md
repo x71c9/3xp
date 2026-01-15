@@ -48,6 +48,16 @@ exp.ensure(obj, schema);
 if(!exp.isValid(obj, schema)){
   console.error('Object is not valid');
 }
+
+// Get all validation errors
+const result = exp.parse({ name: 123 }, schema);
+if (!result.success) {
+  console.error(result.errors);
+  // [
+  //   { path: 'name', message: "Attribute 'name' has an invalid type. Type should be 'string'. Type given 'number'" },
+  //   { path: 'boo', message: "Missing required attribute 'boo'" }
+  // ]
+}
 ```
 
 ## Schema
