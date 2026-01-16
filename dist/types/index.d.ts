@@ -12,7 +12,7 @@ export type Config = {
 };
 export type Schema = Primitive | ExpandedSchema;
 export type SchemaType<S extends Schema> = S extends Primitive ? _PrimitiveToType<S> : S extends ExpandedSchema ? _ExpandedSchemaToType<S> : never;
-type _PrimitiveToType<P extends Primitive> = P extends 'string' ? string : P extends 'number' ? number : P extends 'boolean' ? boolean : P extends 'null' ? null : P extends 'undefined' ? undefined : P extends 'any' ? any : P extends 'unknown' ? unknown : P extends 'array' ? any[] : P extends 'object' ? Record<string, any> : P extends 'enum' ? string | number : never;
+type _PrimitiveToType<P extends Primitive> = P extends 'string' ? string : P extends 'number' ? number : P extends 'boolean' ? boolean : P extends 'date' ? Date : P extends 'null' ? null : P extends 'undefined' ? undefined : P extends 'any' ? any : P extends 'unknown' ? unknown : P extends 'array' ? any[] : P extends 'object' ? Record<string, any> : P extends 'enum' ? string | number : never;
 type _ExpandedSchemaToType<S extends ExpandedSchema> = S extends {
     optional: true;
 } ? _ExpandedSchemaToTypeRequired<S> | undefined : _ExpandedSchemaToTypeRequired<S>;
@@ -66,6 +66,7 @@ export declare const PRIMITIVE: {
     readonly ANY: "any";
     readonly ARRAY: "array";
     readonly BOOLEAN: "boolean";
+    readonly DATE: "date";
     readonly ENUM: "enum";
     readonly NULL: "null";
     readonly NUMBER: "number";

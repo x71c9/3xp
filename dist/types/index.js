@@ -12,6 +12,7 @@ exports.PRIMITIVE = {
     ANY: 'any',
     ARRAY: 'array',
     BOOLEAN: 'boolean',
+    DATE: 'date',
     ENUM: 'enum',
     NULL: 'null',
     NUMBER: 'number',

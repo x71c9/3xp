@@ -215,6 +215,26 @@ export function _validate_attribute(
     return;
   }
 
+  // Validate Date
+  if (expanded_schema.primitive === 'date') {
+    if (!(value instanceof Date)) {
+      _handle_error(
+        attribute_name,
+        `Attribute '${attribute_name}' must be an instance of Date`
+      );
+      return;
+    }
+    // Check for invalid dates (e.g., new Date('invalid'))
+    if (isNaN(value.getTime())) {
+      _handle_error(
+        attribute_name,
+        `Attribute '${attribute_name}' must be a valid Date`
+      );
+    }
+    log.debug(`Attribute '${attribute_name}' validated with errors.`);
+    return;
+  }
+
   // Validate type
   switch (expanded_schema.primitive) {
     case 'enum': {

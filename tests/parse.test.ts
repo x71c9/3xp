@@ -547,4 +547,203 @@ describe('parse', () => {
       }
     });
   });
+
+  describe('Date validation', () => {
+    it('should validate valid date with shorthand syntax', () => {
+      const schema = {
+        primitive: 'object',
+        properties: {
+          createdAt: 'date'
+        }
+      } as const;
+
+      const result = exp.parse({ createdAt: new Date() }, schema);
+      expect(result.success).toBe(true);
+    });
+
+    it('should validate valid date with expanded syntax', () => {
+      const schema = {
+        primitive: 'object',
+        properties: {
+          createdAt: {
+            primitive: 'date',
+            optional: false
+          }
+        }
+      } as const;
+
+      const result = exp.parse({ createdAt: new Date('2023-01-01') }, schema);
+      expect(result.success).toBe(true);
+    });
+
+    it('should validate optional date when present', () => {
+      const schema = {
+        primitive: 'object',
+        properties: {
+          deletedAt: {
+            primitive: 'date',
+            optional: true
+          }
+        }
+      } as const;
+
+      const result = exp.parse({ deletedAt: new Date() }, schema);
+      expect(result.success).toBe(true);
+    });
+
+    it('should validate optional date when missing', () => {
+      const schema = {
+        primitive: 'object',
+        properties: {
+          deletedAt: {
+            primitive: 'date',
+            optional: true
+          }
+        }
+      } as const;
+
+      const result = exp.parse({}, schema);
+      expect(result.success).toBe(true);
+    });
+
+    it('should return error for string instead of date', () => {
+      const schema = {
+        primitive: 'object',
+        properties: {
+          createdAt: 'date'
+        }
+      } as const;
+
+      const result = exp.parse({ createdAt: '2023-01-01' }, schema);
+      expect(result.success).toBe(false);
+      if (!result.success) {
+        expect(result.errors).toHaveLength(1);
+        expect(result.errors[0].path).toBe('createdAt');
+        expect(result.errors[0].message).toContain('must be an instance of Date');
+      }
+    });
+
+    it('should return error for number instead of date', () => {
+      const schema = {
+        primitive: 'object',
+        properties: {
+          createdAt: 'date'
+        }
+      } as const;
+
+      const result = exp.parse({ createdAt: 1234567890 }, schema);
+      expect(result.success).toBe(false);
+      if (!result.success) {
+        expect(result.errors).toHaveLength(1);
+        expect(result.errors[0].message).toContain('must be an instance of Date');
+      }
+    });
+
+    it('should return error for invalid date', () => {
+      const schema = {
+        primitive: 'object',
+        properties: {
+          createdAt: 'date'
+        }
+      } as const;
+
+      const result = exp.parse({ createdAt: new Date('invalid') }, schema);
+      expect(result.success).toBe(false);
+      if (!result.success) {
+        expect(result.errors).toHaveLength(1);
+        expect(result.errors[0].path).toBe('createdAt');
+        expect(result.errors[0].message).toContain('valid Date');
+      }
+    });
+
+    it('should return error for missing required date', () => {
+      const schema = {
+        primitive: 'object',
+        properties: {
+          createdAt: 'date'
+        }
+      } as const;
+
+      const result = exp.parse({}, schema);
+      expect(result.success).toBe(false);
+      if (!result.success) {
+        expect(result.errors).toHaveLength(1);
+        expect(result.errors[0].path).toBe('createdAt');
+        expect(result.errors[0].message).toContain('Missing required attribute');
+      }
+    });
+
+    it('should return error for null instead of date', () => {
+      const schema = {
+        primitive: 'object',
+        properties: {
+          createdAt: 'date'
+        }
+      } as const;
+
+      const result = exp.parse({ createdAt: null }, schema);
+      expect(result.success).toBe(false);
+      if (!result.success) {
+        expect(result.errors).toHaveLength(1);
+        expect(result.errors[0].message).toContain('must be an instance of Date');
+      }
+    });
+
+    it('should validate array of dates', () => {
+      const schema = {
+        primitive: 'object',
+        properties: {
+          timestamps: {
+            primitive: 'array',
+            item: 'date'
+          }
+        }
+      } as const;
+
+      const result = exp.parse({
+        timestamps: [new Date(), new Date(), new Date()]
+      }, schema);
+      expect(result.success).toBe(true);
+    });
+
+    it('should return errors for invalid dates in array', () => {
+      const schema = {
+        primitive: 'object',
+        properties: {
+          timestamps: {
+            primitive: 'array',
+            item: 'date'
+          }
+        }
+      } as const;
+
+      const result = exp.parse({
+        timestamps: [new Date(), 'invalid', new Date('bad')]
+      }, schema);
+
+      expect(result.success).toBe(false);
+      if (!result.success) {
+        expect(result.errors.length).toBeGreaterThanOrEqual(2);
+      }
+    });
+
+    it('should validate date in nested object', () => {
+      const schema = {
+        primitive: 'object',
+        properties: {
+          metadata: {
+            primitive: 'object',
+            properties: {
+              timestamp: 'date'
+            }
+          }
+        }
+      } as const;
+
+      const result = exp.parse({
+        metadata: { timestamp: new Date() }
+      }, schema);
+      expect(result.success).toBe(true);
+    });
+  });
 });

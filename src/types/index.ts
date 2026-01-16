@@ -27,6 +27,8 @@ type _PrimitiveToType<P extends Primitive> = P extends 'string'
   ? number
   : P extends 'boolean'
   ? boolean
+  : P extends 'date'
+  ? Date
   : P extends 'null'
   ? null
   : P extends 'undefined'
@@ -121,6 +123,7 @@ export const PRIMITIVE = {
   ANY: 'any',
   ARRAY: 'array',
   BOOLEAN: 'boolean',
+  DATE: 'date',
   ENUM: 'enum',
   NULL: 'null',
   NUMBER: 'number',
