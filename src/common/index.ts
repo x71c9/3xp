@@ -220,7 +220,7 @@ export function _validate_attribute(
     if (!(value instanceof Date)) {
       _handle_error(
         attribute_name,
-        `Attribute '${attribute_name}' must be an instance of Date`
+        `Attribute '${attribute_name}' must be an instance of Date. '${typeof value}' given.`
       );
       return;
     }

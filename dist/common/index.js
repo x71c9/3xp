@@ -172,9 +172,10 @@ function _validate_attribute(attribute_name, value, expanded_schema, exact, _han
         index_1.log.debug(`Attribute '${attribute_name}' validated with errors.`);
         return;
     }
+    // Validate Date
     if (expanded_schema.primitive === 'date') {
         if (!(value instanceof Date)) {
-            _handle_error(attribute_name, `Attribute '${attribute_name}' must be an instance of Date`);
+            _handle_error(attribute_name, `Attribute '${attribute_name}' must be an instance of Date. '${typeof value}' given.`);
             return;
         }
         // Check for invalid dates (e.g., new Date('invalid'))
