@@ -30,7 +30,7 @@ function _validate_schema_attribute(
     `The attribute '${attribute_name}' is invalid.` +
       ` It should be either one of the primitive types:` +
       ` [${Object.values(types.PRIMITIVE)}]` +
-      ` or in object format.`
+      ` or in object format`
   );
   _validate_schema_attribute_object(attribute_name, schema_definition);
   if ('properties' in schema_definition) {
@@ -183,7 +183,7 @@ export function _validate_attribute(
     if (!Array.isArray(value)) {
       _handle_error(
         attribute_name,
-        `Attribute '${attribute_name}' must be an array. '${typeof value}' given.`
+        `Attribute '${attribute_name}' must be an array. '${typeof value}' given`
       );
       return;
     }
@@ -211,7 +211,7 @@ export function _validate_attribute(
       }
     }
 
-    log.debug(`Attribute '${attribute_name}' validated with errors.`);
+    log.debug(`Attribute '${attribute_name}' validated with errors`);
     return;
   }
 
@@ -220,7 +220,7 @@ export function _validate_attribute(
     if (!(value instanceof Date)) {
       _handle_error(
         attribute_name,
-        `Attribute '${attribute_name}' must be an instance of Date. '${typeof value}' given.`
+        `Attribute '${attribute_name}' must be an instance of Date. '${typeof value}' given`
       );
       return;
     }
@@ -231,7 +231,7 @@ export function _validate_attribute(
         `Attribute '${attribute_name}' must be a valid Date`
       );
     }
-    log.debug(`Attribute '${attribute_name}' validated with errors.`);
+    log.debug(`Attribute '${attribute_name}' validated with errors`);
     return;
   }
 
@@ -286,7 +286,7 @@ export function _validate_attribute(
   if (options && !options.includes(value as any)) {
     _handle_error(
       attribute_name,
-      `Invalid attribute '${attribute_name}'. The only possible values are [${expanded_schema.values}].`
+      `Invalid attribute '${attribute_name}'. The only possible values are [${expanded_schema.values}]`
     );
   }
 
@@ -298,7 +298,7 @@ export function _validate_attribute(
   ) {
     _handle_error(
       attribute_name,
-      `Missing required attribute '${attribute_name}'. The string cannot be empty.`
+      `Missing required attribute '${attribute_name}'. The string cannot be empty`
     );
   }
 
@@ -351,5 +351,5 @@ export function _validate_attribute(
     }
   }
 
-  log.debug(`Attribute '${attribute_name}' validated with errors.`);
+  log.debug(`Attribute '${attribute_name}' validated with errors`);
 }
