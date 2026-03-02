@@ -1,5 +1,7 @@
 #!/bin/sh
 
+npm run build
+
 # Check if on master branch
 current_branch=$(git rev-parse --abbrev-ref HEAD)
 if [ "$current_branch" != "master" ]; then
