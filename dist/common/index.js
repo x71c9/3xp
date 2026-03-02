@@ -46,7 +46,7 @@ function _validate_schema_attribute(attribute_name, schema_definition) {
     _assert_valid_object(schema_definition, `The attribute '${attribute_name}' is invalid.` +
         ` It should be either one of the primitive types:` +
         ` [${Object.values(types.PRIMITIVE)}]` +
-        ` or in object format.`);
+        ` or in object format`);
     _validate_schema_attribute_object(attribute_name, schema_definition);
     if ('properties' in schema_definition) {
         const attribute_properties = schema_definition.properties;
@@ -154,7 +154,7 @@ function _validate_attribute(attribute_name, value, expanded_schema, exact, _han
     // Validate array
     if (expanded_schema.primitive === 'array') {
         if (!Array.isArray(value)) {
-            _handle_error(attribute_name, `Attribute '${attribute_name}' must be an array. '${typeof value}' given.`);
+            _handle_error(attribute_name, `Attribute '${attribute_name}' must be an array. '${typeof value}' given`);
             return;
         }
         if (expanded_schema.item) {
@@ -169,20 +169,20 @@ function _validate_attribute(attribute_name, value, expanded_schema, exact, _han
                 }
             }
         }
-        index_1.log.debug(`Attribute '${attribute_name}' validated with errors.`);
+        index_1.log.debug(`Attribute '${attribute_name}' validated with errors`);
         return;
     }
     // Validate Date
     if (expanded_schema.primitive === 'date') {
         if (!(value instanceof Date)) {
-            _handle_error(attribute_name, `Attribute '${attribute_name}' must be an instance of Date. '${typeof value}' given.`);
+            _handle_error(attribute_name, `Attribute '${attribute_name}' must be an instance of Date. '${typeof value}' given`);
             return;
         }
         // Check for invalid dates (e.g., new Date('invalid'))
         if (isNaN(value.getTime())) {
             _handle_error(attribute_name, `Attribute '${attribute_name}' must be a valid Date`);
         }
-        index_1.log.debug(`Attribute '${attribute_name}' validated with errors.`);
+        index_1.log.debug(`Attribute '${attribute_name}' validated with errors`);
         return;
     }
     // Validate type
@@ -219,13 +219,13 @@ function _validate_attribute(attribute_name, value, expanded_schema, exact, _han
     // Validate options
     const options = expanded_schema.values;
     if (options && !options.includes(value)) {
-        _handle_error(attribute_name, `Invalid attribute '${attribute_name}'. The only possible values are [${expanded_schema.values}].`);
+        _handle_error(attribute_name, `Invalid attribute '${attribute_name}'. The only possible values are [${expanded_schema.values}]`);
     }
     // Validate required empty string
     if (expanded_schema.primitive === 'string' &&
         expanded_schema.optional === false &&
         value === '') {
-        _handle_error(attribute_name, `Missing required attribute '${attribute_name}'. The string cannot be empty.`);
+        _handle_error(attribute_name, `Missing required attribute '${attribute_name}'. The string cannot be empty`);
     }
     // Validate nested attribute
     if (expanded_schema.properties) {
@@ -257,7 +257,7 @@ function _validate_attribute(attribute_name, value, expanded_schema, exact, _han
             _validate_attribute(k, v, expanded_schema.properties[k], exact, _handle_error);
         }
     }
-    index_1.log.debug(`Attribute '${attribute_name}' validated with errors.`);
+    index_1.log.debug(`Attribute '${attribute_name}' validated with errors`);
 }
 exports._validate_attribute = _validate_attribute;
 //# sourceMappingURL=index.js.map
