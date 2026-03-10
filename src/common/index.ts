@@ -205,7 +205,8 @@ export function _validate_attribute(
         if (!expanded_schema.values.includes(value[i])) {
           _handle_error(
             `${attribute_name}[${i}]`,
-            `Element of index ${i} of the array '${attribute_name}' is invalid. Possible values are [${expanded_schema.values}]`
+            `Element of index ${i} of the array '${attribute_name}' is` +
+              ` invalid. Possible values are [${expanded_schema.values}]`
           );
         }
       }
@@ -220,7 +221,8 @@ export function _validate_attribute(
     if (!(value instanceof Date)) {
       _handle_error(
         attribute_name,
-        `Attribute '${attribute_name}' must be an instance of Date. '${typeof value}' given`
+        `Attribute '${attribute_name}' must be an instance of Date.` +
+          ` '${typeof value}' given`
       );
       return;
     }
@@ -255,9 +257,10 @@ export function _validate_attribute(
       if (!possible_values.has(typeof value)) {
         _handle_error(
           attribute_name,
-          `Attribute '${attribute_name}' has an invalid type. Type should be one of the following ['${Array.from(
-            possible_values
-          )}]. Type given '${typeof value}'`
+          `Attribute '${attribute_name}' has an invalid type. Type should be` +
+            ` one of the following ['${Array.from(
+              possible_values
+            )}]. Type given '${typeof value}'`
         );
       }
       break;
@@ -286,7 +289,8 @@ export function _validate_attribute(
   if (options && !options.includes(value as any)) {
     _handle_error(
       attribute_name,
-      `Invalid attribute '${attribute_name}'. The only possible values are [${expanded_schema.values}]`
+      `Invalid attribute '${attribute_name}'. The only possible values` +
+        ` are [${expanded_schema.values}]`
     );
   }
 
@@ -298,7 +302,8 @@ export function _validate_attribute(
   ) {
     _handle_error(
       attribute_name,
-      `Missing required attribute '${attribute_name}'. The string cannot be empty`
+      `Missing required attribute '${attribute_name}'. The string cannot be` +
+        ` empty`
     );
   }
 
@@ -331,7 +336,8 @@ export function _validate_attribute(
         if (exact) {
           _handle_error(
             k,
-            `No additional attributes are permitted. Attribute '${k}' in not in schema`
+            `No additional attributes are permitted. Attribute '${k}' in not` +
+              ` in schema`
           );
         } else {
           log.debug(
