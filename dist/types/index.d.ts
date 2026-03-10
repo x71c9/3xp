@@ -39,6 +39,8 @@ type _PropertiesToType<P extends Properties> = {
 };
 export type ExpandedSchema = {
     item?: Schema;
+    maxLength?: number;
+    minLength?: number;
     optional?: boolean;
     primitive: Primitive;
     properties?: Properties;

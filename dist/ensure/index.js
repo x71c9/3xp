@@ -7,7 +7,7 @@
  *
  */
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.ensure = void 0;
+exports.ensure = ensure;
 const index_1 = require("../log/index");
 const index_2 = require("../common/index");
 function ensure(obj, schema, exact = true) {
@@ -23,5 +23,4 @@ function ensure(obj, schema, exact = true) {
     (0, index_2._validate_attribute)(index_2.root_attribute_reference, obj, expanded_schema, exact, _handle_error);
     index_1.log.success(`The validation was succesfull`);
 }
-exports.ensure = ensure;
 //# sourceMappingURL=index.js.map

@@ -1,7 +1,5 @@
 #!/bin/sh
 
-npm run build
-
 # Check if on master branch
 current_branch=$(git rev-parse --abbrev-ref HEAD)
 if [ "$current_branch" != "master" ]; then
@@ -119,17 +117,20 @@ case "$response" in
   [Yy]* )
     case "$SEMANTIC_NAME" in
       patch)
+        # npm version patch
         increment_version patch
         ;;
       minor)
+        # npm version minor
         increment_version minor
         ;;
       major)
+        # npm version major
         increment_version major
         ;;
     esac
     ;;
-  [Nn]* )
+  [Nn]* ) 
     echo "Changing version canceled."
     exit 1
     ;;
@@ -141,11 +142,17 @@ esac
 
 new_version="$major.$minor.$patch"
 
-jq --arg version "$new_version" '.version = $version' \
+DOT_URANIO_PACKAGE_JSON_PATH=.uranio/package.json
+
+jq --arg uranio_version "$new_version" \
+   '.dependencies |= . + { "uranio": $uranio_version }' \
+   "$DOT_URANIO_PACKAGE_JSON_PATH" > tmpfile && mv tmpfile "$DOT_URANIO_PACKAGE_JSON_PATH"
+
+jq --arg uranio_version "$new_version" '.version = $uranio_version' \
   package.json > tmp_package.json && mv tmp_package.json package.json
 
 git add .
-git commit -m "$new_version"
+git commit -m "auto-updated .uranio dependency uranio"
 git tag -a v$new_version -m "v$new_version"
 
 git push origin
@@ -154,3 +161,4 @@ git push origin v$new_version
 # The version in package.json has already been updated by jq above,
 # so npm publish will use the correct version automatically
 npm publish
+

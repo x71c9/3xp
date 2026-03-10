@@ -212,6 +212,26 @@ export function _validate_attribute(
       }
     }
 
+    // Validate array length
+    if (
+      expanded_schema.minLength !== undefined &&
+      value.length < expanded_schema.minLength
+    ) {
+      _handle_error(
+        attribute_name,
+        `Array '${attribute_name}' must have a minimum length of ${expanded_schema.minLength}, but has length ${value.length}`
+      );
+    }
+    if (
+      expanded_schema.maxLength !== undefined &&
+      value.length > expanded_schema.maxLength
+    ) {
+      _handle_error(
+        attribute_name,
+        `Array '${attribute_name}' must have a maximum length of ${expanded_schema.maxLength}, but has length ${value.length}`
+      );
+    }
+
     log.debug(`Attribute '${attribute_name}' validated with errors`);
     return;
   }
@@ -305,6 +325,28 @@ export function _validate_attribute(
       `Missing required attribute '${attribute_name}'. The string cannot be` +
         ` empty`
     );
+  }
+
+  // Validate string length
+  if (expanded_schema.primitive === 'string' && typeof value === 'string') {
+    if (
+      expanded_schema.minLength !== undefined &&
+      value.length < expanded_schema.minLength
+    ) {
+      _handle_error(
+        attribute_name,
+        `Attribute '${attribute_name}' must have a minimum length of ${expanded_schema.minLength}, but has length ${value.length}`
+      );
+    }
+    if (
+      expanded_schema.maxLength !== undefined &&
+      value.length > expanded_schema.maxLength
+    ) {
+      _handle_error(
+        attribute_name,
+        `Attribute '${attribute_name}' must have a maximum length of ${expanded_schema.maxLength}, but has length ${value.length}`
+      );
+    }
   }
 
   // Validate nested attribute

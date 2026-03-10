@@ -7,7 +7,7 @@
  *
  */
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.parse = void 0;
+exports.parse = parse;
 const index_1 = require("../log/index");
 const index_2 = require("../common/index");
 function parse(obj, schema, exact = true) {
@@ -37,5 +37,4 @@ function parse(obj, schema, exact = true) {
         };
     }
 }
-exports.parse = parse;
 //# sourceMappingURL=index.js.map
