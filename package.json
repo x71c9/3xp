@@ -11,6 +11,8 @@
     "build": "npx tsc -b",
     "dev": "npx tsc -w",
     "dev:base": "node ./dist/index.js",
+    "test": "npx jest --coverage",
+    "test:watch": "npx jest --watch",
     "push:patch": "bash ./scripts/version.sh patch",
     "push:minor": "bash ./scripts/version.sh minor",
     "push:major": "bash ./scripts/version.sh major"
@@ -22,13 +24,16 @@
   },
   "devDependencies": {
     "@types/inquirer": "^9.0.9",
+    "@types/jest": "^30.0.0",
     "@types/node": "^25.3.0",
     "eslint": "^10.0.1",
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-json": "^4.0.1",
     "husky": "^9.1.7",
+    "jest": "^30.3.0",
     "lint-staged": "^16.2.7",
     "prettier": "3.8.1",
+    "ts-jest": "^29.4.6",
     "tsc-watch": "^7.2.0",
     "typescript": "^5.9.3"
   },

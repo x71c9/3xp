@@ -11,17 +11,8 @@ const config: Partial<Config.InitialOptions> = {
   moduleNameMapper: {
     '^(\\.{1,2}/.*)\\.js$': '$1',
   },
-  reporters: [
-    'default',
-    [
-      'jest-junit',
-      {
-        outputDirectory: './reports/unittest/',
-        outputName: 'junit.xml',
-      },
-    ],
-  ],
-  collectCoverage: true,
+  reporters: ['default'],
+  collectCoverage: false,
   coverageReporters: ['json-summary', 'lcov', 'text', 'cobertura'],
   coverageDirectory: './reports/coverage/',
 };

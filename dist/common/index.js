@@ -86,6 +86,8 @@ function _expand_schema(schema) {
         properties: !schema.properties
             ? undefined
             : _expand_attribute_schema(schema.properties),
+        minLength: schema.minLength,
+        maxLength: schema.maxLength,
     };
     return expanded_schema;
 }

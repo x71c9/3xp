@@ -101,6 +101,8 @@ export type ExpandedSchema = {
   values?: Values;
   properties?: Properties;
   optional?: boolean;
+  minLength?: number;
+  maxLength?: number;
 };
 
 export type Properties = {
@@ -129,6 +131,33 @@ export const PRIMITIVE = {
 export type Primitive = ObjectValue<typeof PRIMITIVE>;
 
 type ObjectValue<T> = T[keyof T];
+```
+
+### Length Validation
+
+You can enforce length constraints on strings and arrays using `minLength` and `maxLength`:
+
+```typescript
+const schema: exp.Schema = {
+  primitive: 'object',
+  properties: {
+    username: {
+      primitive: 'string',
+      minLength: 3,
+      maxLength: 20
+    },
+    tags: {
+      primitive: 'array',
+      minLength: 1,
+      maxLength: 5
+    },
+    zipCode: {
+      primitive: 'string',
+      minLength: 5,
+      maxLength: 5  // Exact length validation
+    }
+  }
+} as const;
 ```
 
 ### Exact Mode
