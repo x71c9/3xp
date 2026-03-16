@@ -183,9 +183,13 @@ export function _validate_attribute(
   // Validate array
   if (expanded_schema.primitive === 'array') {
     if (!Array.isArray(value)) {
+      const display_name =
+        attribute_name === root_attribute_reference
+          ? 'The value'
+          : `Attribute '${attribute_name}'`;
       _handle_error(
         attribute_name,
-        `Attribute '${attribute_name}' must be an array. '${typeof value}' given`
+        `${display_name} must be an array. '${typeof value}' given`
       );
       return;
     }
@@ -205,9 +209,13 @@ export function _validate_attribute(
     if (expanded_schema.values) {
       for (let i = 0; i < value.length; i++) {
         if (!expanded_schema.values.includes(value[i])) {
+          const display_name =
+            attribute_name === root_attribute_reference
+              ? 'the array'
+              : `the array '${attribute_name}'`;
           _handle_error(
             `${attribute_name}[${i}]`,
-            `Element of index ${i} of the array '${attribute_name}' is` +
+            `Element of index ${i} of ${display_name} is` +
               ` invalid. Possible values are [${expanded_schema.values}]`
           );
         }
@@ -219,18 +227,26 @@ export function _validate_attribute(
       expanded_schema.minLength !== undefined &&
       value.length < expanded_schema.minLength
     ) {
+      const display_name =
+        attribute_name === root_attribute_reference
+          ? 'The array'
+          : `Array '${attribute_name}'`;
       _handle_error(
         attribute_name,
-        `Array '${attribute_name}' must have a minimum length of ${expanded_schema.minLength}, but has length ${value.length}`
+        `${display_name} must have a minimum length of ${expanded_schema.minLength}, but has length ${value.length}`
       );
     }
     if (
       expanded_schema.maxLength !== undefined &&
       value.length > expanded_schema.maxLength
     ) {
+      const display_name =
+        attribute_name === root_attribute_reference
+          ? 'The array'
+          : `Array '${attribute_name}'`;
       _handle_error(
         attribute_name,
-        `Array '${attribute_name}' must have a maximum length of ${expanded_schema.maxLength}, but has length ${value.length}`
+        `${display_name} must have a maximum length of ${expanded_schema.maxLength}, but has length ${value.length}`
       );
     }
 

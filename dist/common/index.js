@@ -167,7 +167,10 @@ function _validate_attribute(attribute_name, value, expanded_schema, exact, _han
     // Validate array
     if (expanded_schema.primitive === 'array') {
         if (!Array.isArray(value)) {
-            _handle_error(attribute_name, `Attribute '${attribute_name}' must be an array. '${typeof value}' given`);
+            const display_name = attribute_name === exports.root_attribute_reference
+                ? 'The value'
+                : `Attribute '${attribute_name}'`;
+            _handle_error(attribute_name, `${display_name} must be an array. '${typeof value}' given`);
             return;
         }
         if (expanded_schema.item) {
@@ -178,7 +181,10 @@ function _validate_attribute(attribute_name, value, expanded_schema, exact, _han
         if (expanded_schema.values) {
             for (let i = 0; i < value.length; i++) {
                 if (!expanded_schema.values.includes(value[i])) {
-                    _handle_error(`${attribute_name}[${i}]`, `Element of index ${i} of the array '${attribute_name}' is` +
+                    const display_name = attribute_name === exports.root_attribute_reference
+                        ? 'the array'
+                        : `the array '${attribute_name}'`;
+                    _handle_error(`${attribute_name}[${i}]`, `Element of index ${i} of ${display_name} is` +
                         ` invalid. Possible values are [${expanded_schema.values}]`);
                 }
             }
@@ -186,11 +192,17 @@ function _validate_attribute(attribute_name, value, expanded_schema, exact, _han
         // Validate array length
         if (expanded_schema.minLength !== undefined &&
             value.length < expanded_schema.minLength) {
-            _handle_error(attribute_name, `Array '${attribute_name}' must have a minimum length of ${expanded_schema.minLength}, but has length ${value.length}`);
+            const display_name = attribute_name === exports.root_attribute_reference
+                ? 'The array'
+                : `Array '${attribute_name}'`;
+            _handle_error(attribute_name, `${display_name} must have a minimum length of ${expanded_schema.minLength}, but has length ${value.length}`);
         }
         if (expanded_schema.maxLength !== undefined &&
             value.length > expanded_schema.maxLength) {
-            _handle_error(attribute_name, `Array '${attribute_name}' must have a maximum length of ${expanded_schema.maxLength}, but has length ${value.length}`);
+            const display_name = attribute_name === exports.root_attribute_reference
+                ? 'The array'
+                : `Array '${attribute_name}'`;
+            _handle_error(attribute_name, `${display_name} must have a maximum length of ${expanded_schema.maxLength}, but has length ${value.length}`);
         }
         index_1.log.debug(`Attribute '${attribute_name}' validated with errors`);
         return;
