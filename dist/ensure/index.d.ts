@@ -2,6 +2,8 @@
  *
  * Ensure index module
  *
+ * Validates an object against a schema and throws on the first error, acting as a type assertion.
+ *
  * @packageDocumentation
  *
  */

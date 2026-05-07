@@ -2,11 +2,15 @@
  *
  * Ensure index module
  *
+ * Validates an object against a schema and throws on the first error, acting as a type assertion.
+ *
  * @packageDocumentation
  *
  */
 
 import * as types from '../types/index';
+import {weights} from '../config/index';
+import {parse} from '../parse/index';
 import {log} from '../log/index';
 import {
   root_attribute_reference,
@@ -18,7 +22,7 @@ import {
 export function ensure<S extends types.Schema>(
   obj: unknown,
   schema: S,
-  exact: boolean = true
+  exact: boolean = true,
 ): asserts obj is types.SchemaType<S> {
   log.trace(`Validating object:`, obj);
   log.trace(`For schema:`, schema);
@@ -28,6 +32,10 @@ export function ensure<S extends types.Schema>(
 
   // Throw on first error
   const _handle_error = (_path: string, message: string) => {
+    if (weights.params.print_errors === true) {
+      const parsed = parse(obj, schema, exact);
+      console.error(parsed.errors);
+    }
     throw new Error(message);
   };
 
@@ -36,7 +44,7 @@ export function ensure<S extends types.Schema>(
     obj,
     expanded_schema,
     exact,
-    _handle_error
+    _handle_error,
   );
 
   log.success(`The validation was succesfull`);

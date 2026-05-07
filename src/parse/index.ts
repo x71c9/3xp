@@ -2,6 +2,8 @@
  *
  * Parse index module
  *
+ * Validates an object against a schema, collects all errors without throwing, and returns a ValidationResult.
+ *
  * @packageDocumentation
  *
  */
